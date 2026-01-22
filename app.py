@@ -1,8 +1,13 @@
-from fastapi import FastAPI,Depends
+from fastapi import FastAPI,Depends,Response
 from pydantic import BaseModel
 from typing import Optional
 from sqlalchemy import create_engine,Column,Integer,String,Text
 from sqlalchemy.orm import sessionmaker,Session,declarative_base
+import time
+import requests
+import httpx
+import asyncio
+import jwt
 
 
 
@@ -64,3 +69,69 @@ def create_item(item: Item, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_item)
     return new_item
+@app.get("/sync")
+def sync_task():
+    return  blocking_fetch_urls(["https://jsonplaceholder.typicode.com/todos/1","https://api.restful-api.dev/objects","https://api.restful-api.dev/objects?id=3&id=5&id=10"])
+
+@app.get("/async")  
+async def async_f():
+    call= await background_task()
+    q= await nonblocking_fetch_urls(["https://jsonplaceholder.typicode.com/todos/1","https://api.restful-api.dev/objects","https://api.restful-api.dev/objects?id=3&id=5&id=10"])
+    
+    return q,call
+
+
+def blocking_fetch_urls(urls):
+    results = []
+    start_time = time.time()
+    
+    for url in urls:
+        try:
+            print(f"Fetching {url}")
+            response =  requests.get(url)
+            
+            results.append({
+                'url': url,
+                'status': response.status_code,
+                'length': len(response.text),
+                'data':response.text,
+
+            })
+            print("success" )
+        except Exception as e:
+            results.append({
+                'url': url,
+                'error': str(e)
+            })
+    
+    return results    
+
+
+async def nonblocking_fetch_urls(urls):
+    results = []
+    start_time = time.time()
+    async with httpx.AsyncClient() as client:
+        for url in urls:
+            try:
+                print(f"Fetching {url}")
+                response = await client.get(url)
+                print(response.status_code or "next")
+                results.append({
+                    'url': url,
+                    'status': response.status_code,
+                    'length': len(response.text),
+                    'data':response.text,
+
+                })
+                print("success" )
+            except Exception as e:
+                results.append({
+                    'url': url,
+                    'error': str(e)
+                })
+        
+        return results      
+async def background_task():
+    for i in range(5):
+        print(f"Background task running {i}")
+        await asyncio.sleep(1)  # simulate work        
