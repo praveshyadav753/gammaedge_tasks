@@ -1,0 +1,11 @@
+{
+  "https://jsonplaceholder.typicode.com/todos/1": {
+    "timestamp": "2026-01-30T17:12:01.068021",
+    "response": {
+      "userId": 1,
+      "id": 1,
+      "title": "delectus aut autem",
+      "completed": false
+    }
+  }
+}

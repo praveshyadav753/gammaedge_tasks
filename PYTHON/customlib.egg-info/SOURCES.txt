@@ -1,0 +1,8 @@
+setup.py
+customlib/__init__.py
+customlib/functions.py
+customlib.egg-info/PKG-INFO
+customlib.egg-info/SOURCES.txt
+customlib.egg-info/dependency_links.txt
+customlib.egg-info/top_level.txt
+tests/test.py

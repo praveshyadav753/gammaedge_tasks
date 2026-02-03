@@ -1,0 +1,26 @@
+[
+{"timestamp": "2025-01-29T10:00:00.000Z", "level": "INFO", "service": "auth-api", "event": "user_login", "user_id": 101, "status": "success", "ip_address": "192.168.1.1"},
+{"timestamp": "2025-01-29T10:00:05.123Z", "level": "WARN", "service": "data-processor", "event": "invalid_data_format", "record_id": 5543, "details": "missing required field 'client_name'"},
+{"timestamp": "2025-01-29T11:00:11.245Z", "level": "INFO", "service": "web-server", "event": "http_request", "method": "GET", "path": "/home", "status_code": 200, "response_time_ms": 150},
+{"timestamp": "2025-01-29T10:00:15.367Z", "level": "ERROR", "service": "database", "event": "connection_failure", "error_code": 5001, "db_host": "db-prod-01", "message": "Failed to connect to the database"},
+{"timestamp": "2025-01-29T10:00:20.489Z", "level": "INFO", "service": "auth-api", "event": "user_logout", "user_id": 101, "ip_address": "192.168.1.1"},
+{"timestamp": "2025-01-29T10:00:25.612Z", "level": "DEBUG", "service": "data-processor", "event": "processing_started", "batch_id": "B-998877", "items_count": 500},
+{"timestamp": "2025-01-29T12:00:30.734Z", "level": "INFO", "service": "web-server", "event": "http_request", "method": "POST", "path": "/api/submit", "status_code": 201, "response_time_ms": 450},
+{"timestamp": "2025-01-29T10:00:35.856Z", "level": "ERROR", "service": "file-storage", "event": "disk_space_low", "disk_id": "/dev/sda1", "available_space_gb": 5, "threshold_gb": 10},
+{"timestamp": "2025-01-29T10:00:40.978Z", "level": "INFO", "service": "auth-api", "event": "user_registration", "user_id": 102, "status": "pending_verification"},
+{"timestamp": "2025-01-29T10:00:46.100Z", "level": "INFO", "service": "web-server", "event": "http_request", "method": "GET", "path": "/dashboard", "status_code": 200, "response_time_ms": 200},
+{"timestamp": "2025-01-29T10:00:51.223Z", "level": "WARN", "service": "billing-engine", "event": "payment_failed", "user_id": 101, "invoice_id": "INV-76543", "amount": 99.99, "currency": "USD", "reason": "card declined"},
+{"timestamp": "2025-01-29T01:00:56.345Z", "level": "INFO", "service": "data-processor", "event": "processing_completed", "batch_id": "B-998877", "processed_count": 500},
+{"timestamp": "2025-01-29T10:01:01.467Z", "level": "INFO", "service": "web-server", "event": "http_request", "method": "GET", "path": "/images/logo.png", "status_code": 304, "response_time_ms": 50},
+{"timestamp": "2025-01-29T12:01:06.589Z", "level": "ERROR", "service": "auth-api", "event": "authentication_error", "user_id": 103, "details": "invalid credentials attempt 3"},
+{"timestamp": "2025-01-29T10:01:11.712Z", "level": "DEBUG", "service": "cache-service", "event": "cache_miss", "key": "user_data:102", "source": "database"},
+{"timestamp": "2025-01-29T08:01:16.834Z", "level": "INFO", "service": "web-server", "event": "http_request", "method": "GET", "path": "/profile/101", "status_code": 200, "response_time_ms": 300},
+{"timestamp": "2025-01-29T10:01:21.956Z", "level": "INFO", "service": "system-monitor", "event": "cpu_usage_high", "cpu_percent": 85.5, "server_name": "web-prod-02"},
+{"timestamp": "2025-01-29T10:01:27.078Z", "level": "ERROR", "service": "data-processor", "event": "internal_error", "batch_id": "B-998878", "message": "NullPointerException in data mapping"},
+{"timestamp": "2025-01-29T03:01:32.200Z", "level": "INFO", "service": "auth-api", "event": "password_reset_request", "user_id": 103, "status": "email_sent"},
+{"timestamp": "2025-01-29T10:01:37.323Z", "level": "INFO", "service": "web-server", "event": "http_request", "method": "GET", "path": "/status", "status_code": 200, "response_time_ms": 50},
+{"timestamp": "2025-01-29T06:01:42.445Z", "level": "WARN", "service": "file-storage", "event": "file_not_found", "file_path": "/uploads/user_104/profile.jpg", "user_id": 104},
+{"timestamp": "2025-01-29T10:01:47.567Z", "level": "INFO", "service": "data-processor", "event": "new_data_ingested", "source": "s3-bucket", "records_count": 1200},
+{"timestamp": "2025-01-29T09:01:52.689Z", "level": "DEBUG", "service": "web-server", "event": "session_created", "session_id": "sess-123456", "user_id": 101}
+
+]
