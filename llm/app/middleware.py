@@ -1,8 +1,12 @@
 from fastapi import FastAPI, Request,HTTPException
+from fastapi.responses import JSONResponse
 # from llm.app.app import app
 from uuid import uuid4
 import logging
 import time
+import asyncio
+
+
 logger = logging.getLogger(__name__)
 # @app.middleware('http')
 async def cust_logging(request:Request,call_next):
@@ -25,8 +29,16 @@ class RequestTimeoutException(HTTPException):
 
 async def timeout_middlewar(request:Request,call_next):
     try:
-     response  = await call_next(request,timeout = 30) 
-    except TimeoutError:
-                   raise RequestTimeoutException()
+        response = await asyncio.wait_for(
+            call_next(request),
+            timeout=30
+        )
+        return response
+
+    except asyncio.TimeoutError:
+        return JSONResponse(
+            status_code=504,
+            content={"detail": "Request timeout"},
+        )
         
 
