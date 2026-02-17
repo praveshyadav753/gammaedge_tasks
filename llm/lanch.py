@@ -11,11 +11,12 @@ import os
 import json
 from langchain.messages import AnyMessage
 from langchain.messages import HumanMessage
+from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 
-# api_key_groq = os.getenv("GROQ_API_KEY")
-api_key_groq ="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"
+api_key_groq = os.getenv("GROQ1")
+# api_key_groq = 
 
 # Step 1: Define tools and model
 model = init_chat_model(
