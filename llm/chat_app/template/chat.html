@@ -1,67 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
     <title>LLM Chat</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/static/chat.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+  </head>
+  <body>
+    <div class="chat-container">
+      <h2>LLM Chat Application</h2>
 
-<div class="chat-container">
-    <h2>LLM Chat Application</h2>
-    
-    <div id="chat-box"></div>
+      <div id="chat-box"></div>
 
-    <div class="input-area">
-        <input type="text" id="messageInput" placeholder="Type your message..." />
+      <div class="input-area">
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Type your message..."
+        />
         <button onclick="sendMessage()">Send</button>
         <button onclick="clearChat()">Clear Chat</button>
+      </div>
     </div>
-</div>
 
-<script>
-    const userId = "{{ user_id }}";
-    const ws = new WebSocket(`ws://${window.location.host}/ws/${userId}`);
-    const chatBox = document.getElementById("chat-box");
-    const input = document.getElementById("messageInput");
+    <script>
+      const userId = "{{ user_id }}";
+      const ws = new WebSocket(`ws://${window.location.host}/ws/${userId}`);
+      const chatBox = document.getElementById("chat-box");
+      const input = document.getElementById("messageInput");
 
-    ws.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        appendMessage("LLM", data.response);
-    };
+      let currentLLMMessageDiv = null;
+      let accumulatedMarkdown = "";
 
-    function appendMessage(sender, message) {
+      ws.onmessage = function (event) {
+        const chunk = event.data;
+
+        if (!currentLLMMessageDiv) {
+          currentLLMMessageDiv = document.createElement("div");
+          currentLLMMessageDiv.classList.add("message");
+          currentLLMMessageDiv.innerHTML = `<strong>LLM:</strong> <span></span>`;
+          chatBox.appendChild(currentLLMMessageDiv);
+          accumulatedMarkdown = ""; 
+        }
+
+        accumulatedMarkdown += chunk;
+
+        const span = currentLLMMessageDiv.querySelector("span");
+        span.innerHTML = marked.parse(accumulatedMarkdown);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+      };
+
+      function appendMessage(sender, message) {
         const msgDiv = document.createElement("div");
         msgDiv.classList.add("message");
         msgDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
         chatBox.appendChild(msgDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
-    }
+      }
 
-    function sendMessage() {
+      function sendMessage() {
         const message = input.value.trim();
         if (message === "") return;
 
+        currentLLMMessageDiv = null;
+
         appendMessage("You", message);
 
-        ws.send(JSON.stringify({
-            user_id: userId,
-            message: message
-        }));
+        ws.send(
+          JSON.stringify({
+            message: message,
+          }),
+        );
 
         input.value = "";
-    }
+      }
 
-    function clearChat() {
+      function clearChat() {
         chatBox.innerHTML = "";
-    }
+        currentLLMMessageDiv = null;
+      }
 
-    // 🔹 Send message on Enter key
-    input.addEventListener("keypress", function(e) {
+      input.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
-            sendMessage();
+          sendMessage();
         }
-    });
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>
