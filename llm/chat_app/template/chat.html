@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LLM Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="chat-container">
+    <h2>LLM Chat Application</h2>
+    
+    <div id="chat-box"></div>
+
+    <div class="input-area">
+        <input type="text" id="messageInput" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+        <button onclick="clearChat()">Clear Chat</button>
+    </div>
+</div>
+
+<script>
+    const userId = "{{ user_id }}";
+    const ws = new WebSocket(`ws://${window.location.host}/ws/${userId}`);
+    const chatBox = document.getElementById("chat-box");
+    const input = document.getElementById("messageInput");
+
+    ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        appendMessage("LLM", data.response);
+    };
+
+    function appendMessage(sender, message) {
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("message");
+        msgDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendMessage() {
+        const message = input.value.trim();
+        if (message === "") return;
+
+        appendMessage("You", message);
+
+        ws.send(JSON.stringify({
+            user_id: userId,
+            message: message
+        }));
+
+        input.value = "";
+    }
+
+    function clearChat() {
+        chatBox.innerHTML = "";
+    }
+
+    // 🔹 Send message on Enter key
+    input.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            sendMessage();
+        }
+    });
+</script>
+
+</body>
+</html>

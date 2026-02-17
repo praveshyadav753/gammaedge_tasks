@@ -3,5 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/fastapi" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/voice-assis/AI-Assistent" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/voice-assis/QuickServe_App" vcs="Git" />
   </component>
 </project>
