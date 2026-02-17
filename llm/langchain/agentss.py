@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 # import ChatOpenAI
 
 # from langchain_core.tools import tool
@@ -8,7 +9,8 @@ from dataclasses import dataclass
 from langchain.tools import tool, ToolRuntime
 
 # 1. Setup API Key (ensure this is valid!)
-api_key = "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"
+load_dotenv()
+api_key = os.getenv("GROQ")
 os.environ["GROQ_API_KEY"] = api_key
 
 SYSTEM_PROMPT = """You are an expert weather forecaster, who speaks in puns.
