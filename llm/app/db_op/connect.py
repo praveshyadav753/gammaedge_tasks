@@ -10,35 +10,28 @@ current_file_path = Path(__file__).resolve()
 
 current_dir = current_file_path.parent.parent
 BOOK_PATH = current_dir/"llm.pdf"
-client = chromadb.Client(Settings(persist_directory="./chroma_db"))
-# collection = client.get_or_create_collection(name="llm")
 
+client = chromadb.Client(
+    Settings(
+        persist_directory="./chroma_db",
+        is_persistent=True
+    )
+)
 default_ef = embedding_functions.DefaultEmbeddingFunction()
 
+
 collection = client.get_or_create_collection(
-    name="single_pdf",
-    embedding_function=default_ef
+    name="files",
+    # embedding_function=default_ef
 )
+
 collections = client.list_collections()
+
 print("Collections in ChromaDB:")
-for col in collections:
-    print(col.name)
 
-def ingest():
-    # client = chromadb.Client(Settings(persist_directory="./chroma_db"))
-    # collection = client.get_or_create_collection(name="llm")
+# for col in collections:
+#     print(col.name)
+# alldata = collection.get()
+# print(collection.count())
+# print(alldata)
 
-    text = load_pdf("llm.pdf")
-    embedding = embed_text([text])[0]
-
-    collection.add(
-        documents=[text],
-        embeddings=[embedding],
-        ids=["document_1"],
-        metadatas=[{"source": "document.pdf"}]
-    )
-
-    print("PDF successfully ingested.")
-
-# if __name__ == "__main__":
-#     ingest()

@@ -2,8 +2,9 @@ import os
 from google import genai
 from dotenv import load_dotenv
 import numpy as np
-
+from  sentence_transformers import SentenceTransformer
 load_dotenv()
+import asyncio
 api_key = os.getenv("GEN_AI")
 client = genai.Client(api_key=api_key)
 
@@ -33,9 +34,9 @@ def get_embeddings(texts: list[str], task_type="SEMANTIC_SIMILARITY"):
     # run the async function synchronously
     return asyncio.run(async_embed(texts))
 
+model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-# Example usage:
-
-# text = "This is a test sentence."
-# vector = get_embeddings([text])[0]  # get first (and only) vector
-# print(vector.shape)
+async def embed_text(text: str):
+    # embeddings = model.encode(text)
+    response =await asyncio.to_thread(model.encode, text)
+    return response.tolist()

@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from middleware import cust_logging,timeout_middlewar
 import asyncio
-import vecdb
+# import vecdb
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import uvicorn
@@ -13,7 +13,7 @@ import logging
 from db_op.chroma_router import Chroma_router
 from google import genai
 import os
-
+from pipeline.routes import pipeline_router
 
 
 load_dotenv()
@@ -63,8 +63,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(vecdb.router)
+# app.include_router(vecdb.router)
 app.include_router(Chroma_router)
+app.include_router(pipeline_router)
 
 # Pydantic Models
 
