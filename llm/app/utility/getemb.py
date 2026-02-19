@@ -25,7 +25,10 @@ def get_embeddings(texts: list[str], task_type="SEMANTIC_SIMILARITY"):
                 "output_dimensionality": 768
             }
         )
-        return [np.array(e.values) for e in response.embeddings]
+        
+        embedding = [e.values for e in response.embeddings]
+        return  embedding
+
 
     # run the async function synchronously
     return asyncio.run(async_embed(texts))

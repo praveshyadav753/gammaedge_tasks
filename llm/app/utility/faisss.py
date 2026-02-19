@@ -1,7 +1,7 @@
 import faiss
 import numpy as np
 import pickle
-from getemb import get_embeddings
+from .getemb import get_embeddings
 
 class FaissStore:
     def __init__(self, dimension=1536):
@@ -9,9 +9,9 @@ class FaissStore:
         self.index = faiss.IndexFlatL2(dimension)
         self.metadata = []
 
-    def add_documents(self, documents):
+    async def add_documents(self, documents):
         texts = [doc["text"] for doc in documents]
-        embeddings = get_embeddings(texts)
+        embeddings = await get_embeddings(texts)
 
         vectors = np.array(embeddings).astype("float32")
         self.index.add(vectors)

@@ -10,6 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import uvicorn
 from dotenv import load_dotenv
 import logging
+from db_op.chroma_router import Chroma_router
 from google import genai
 import os
 
@@ -39,20 +40,19 @@ app = FastAPI(title="Semantic Similarity API")
 app.middleware("http")(cust_logging)
 app.middleware("http")(timeout_middlewar)
 
-@app.middleware("http")
-async def timeout_middleware(request: Request, call_next):
-    try:
-        response = await asyncio.wait_for(
-            call_next(request),
-            timeout=30
-        )
-        return response
-    except asyncio.TimeoutError:
-        logger.warning(f"Request timeout: {request.url}")
-        return JSONResponse(
-            status_code=504,
-            content={"detail": "Request timeout"},
-        )
+# async def timeout_middleware(request: Request, call_next):
+    # try:
+    #     response = await asyncio.wait_for(
+    #         call_next(request),
+    #         timeout=30
+    #     )
+    #     return response
+    # except asyncio.TimeoutError:
+    #     logger.warning(f"Request timeout: {request.url}")
+    #     return JSONResponse(
+    #         status_code=504,
+    #         content={"detail": "Request timeout"},
+    #     )
 
 
 app.add_middleware(
@@ -64,6 +64,7 @@ app.add_middleware(
 )
 
 app.include_router(vecdb.router)
+app.include_router(Chroma_router)
 
 # Pydantic Models
 

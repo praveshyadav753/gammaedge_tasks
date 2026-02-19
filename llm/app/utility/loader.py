@@ -1,4 +1,5 @@
 from pathlib import Path
+import pypdf
 
 current_file_path = Path(__file__).resolve()
 

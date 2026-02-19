@@ -31,7 +31,7 @@ async def timeout_middlewar(request:Request,call_next):
     try:
         response = await asyncio.wait_for(
             call_next(request),
-            timeout=30
+            timeout=120
         )
         return response
 

@@ -7,3 +7,4 @@ env
 .env
 ./.env
 ..env
+llm/app/chroma_db

@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 from fastapi import Query
-from utility.faisss import FaissVectorStore
+from utility.faisss import FaissStore
 
 
 
 documents = ""
-vector_store = FaissVectorStore()
+vector_store = FaissStore()
 vector_store.add_documents(documents)
 
 
