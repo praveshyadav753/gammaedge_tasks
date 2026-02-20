@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+    <h1>Application Dashboard</h1>
+    <p>This content is fully rendered using backend context.</p>
+</section>
+
+<section class="stats">
+    <div class="stat-box">
+        <h2>{{ stats.users }}</h2>
+        <p>Total Users</p>
+    </div>
+    <div class="stat-box">
+        <h2>{{ stats.projects }}</h2>
+        <p>Projects</p>
+    </div>
+    <div class="stat-box">
+        <h2>{{ stats.uptime }}</h2>
+        <p>Server Uptime</p>
+    </div>
+</section>
+
+<section class="features">
+    <h2>System Modules</h2>
+    <ul>
+        {% for feature in features %}
+            <li>
+                {{ feature.title }}
+                {% if feature.enabled %}
+                    <span class="enabled">✔ Enabled</span>
+                {% else %}
+                    <span class="disabled">✖ Disabled</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}
