@@ -10,10 +10,10 @@ from pprint import pprint
 
 load_dotenv()
 
-# Path to your image
+# *Path to your image
 image_path = "llm/langchain/scenaryimg.jpg"
 
-# Load API key
+#! Load API key
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise ValueError("OPENAI API key not found in environment variables")

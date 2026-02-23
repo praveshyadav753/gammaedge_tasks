@@ -4,7 +4,7 @@ from langchain_groq import ChatGroq
 from langchain.agents import create_agent
 from dataclasses import dataclass
 from langchain.tools import tool, ToolRuntime
-from langchain.messages import HumanMessage, SystemMessage
+from langchain.messages import HumanMessage
 
 
 load_dotenv()
@@ -39,6 +39,7 @@ class Context:
 @dataclass
 class ResponseFormat:
     """Response schema for the agent."""
+
     punny_response: str
     weather_conditions: str | None = None
 
@@ -68,9 +69,7 @@ agent = create_agent(
 print("Invoking agent (waiting for Groq response)...")
 config = {"configurable": {"thread_id": "1"}}
 
-response = agent.invoke(
-    {"messages": [question]}
-)
+response = agent.invoke({"messages": [question]})
 
 print("Response received:")
 print(response["messages"][-1].content)
@@ -83,5 +82,5 @@ for token, metadata in agent.stream(
     },
     stream_mode="messages",
 ):
-    if token.content:  
+    if token.content:
         print(token.content, end="", flush=True)  # Print token

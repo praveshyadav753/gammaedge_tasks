@@ -1,21 +1,26 @@
+import asyncio
+from pprint import pprint
 from dotenv import load_dotenv
 from langchain.agents import create_agent
-
+from langchain.messages import HumanMessage
+from langchain_mcp_adapters.client import MultiServerMCPClient
+import os
 load_dotenv()
 
-from langchain_mcp_adapters.client import MultiServerMCPClient
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("OPENAI API key not found in environment variables")
+os.environ["OPENAI_API_KEY"] = api_key
 
 client = MultiServerMCPClient(
     {
         "local_server": {
                 "transport": "stdio",
                 "command": "python3",
-                "args": ["llm/langchain/mcp/mcp_server.py"],
+                "args": ["mcp_server.py"],
             }
-    }
+}
 )
-
-import asyncio
 
 async def main():
     tools = await client.get_tools()
@@ -29,7 +34,6 @@ async def main():
         system_prompt=prompt
     )
 
-    from langchain.messages import HumanMessage
     config = {"configurable": {"thread_id": "1"}}
 
     response = await agent.ainvoke(
@@ -37,7 +41,6 @@ async def main():
         config=config
     )
 
-    from pprint import pprint
     pprint(response["messages"][-1].content)
 
 # Run async main

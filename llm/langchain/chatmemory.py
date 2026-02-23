@@ -1,9 +1,12 @@
+# from langchain_openai import ChatOpenAI
+import os
+from pprint import pprint
+
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain.messages import HumanMessage
-from pprint import pprint
-# from langchain_openai import ChatOpenAI
-import os
+from langchain_groq import ChatGroq
+from langgraph.checkpoint.memory import InMemorySaver
 
 load_dotenv()
 
@@ -21,10 +24,6 @@ os.environ["GROQ_API_KEY"] = api_key
 # )
 
 # pprint(response)
-
-from langgraph.checkpoint.memory import InMemorySaver
-from langchain_groq import ChatGroq
-
 
 model = ChatGroq(
     model="llama-3.1-8b-instant",
