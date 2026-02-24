@@ -1,0 +1,35 @@
+graph TD
+    %% Entry and State Management
+    Start((fa:fa-play Start)) --> LoadCheckpointer[fa:fa-microchip Checkpointer: Load Thread ID]
+    LoadCheckpointer --> InputReducer[fa:fa-plus-circle State Reducer: Merge Input]
+    
+    subgraph LangGraph_Runtime [Graph Execution Loop]
+        InputReducer --> PreMiddleware[before_agent: Global Configuration/Auth]
+        
+        %% The Core Logic Node
+        subgraph Agent_Node [Model Node]
+            PreMiddleware --> ModelLogic[Format Prompt + Messages]
+            ModelLogic --> LLMCall{fa:fa-robot LLM Call}
+            LLMCall --> PostModel[after_model: Parse Output/Usage]
+        end
+
+        %% Routing Logic
+        PostModel --> Router{fa:fa-code-branch Conditional Edge}
+        
+        Router -- "tool_calls" --> ToolNode[fa:fa-tools Tool Node]
+        ToolNode --> ToolReducer[fa:fa-arrow-up State Reducer: Append ToolMessage]
+        ToolReducer --> Agent_Node
+        
+        Router -- "end / __end__" --> PostMiddleware[after_agent: Final Output Cleanup]
+    end
+
+    %% Finalization
+    PostMiddleware --> SaveCheckpointer[fa:fa-save Checkpointer: Persist State Snapshot]
+    SaveCheckpointer --> End((fa:fa-stop End))
+
+    %% Styling for LangChain Branding Colors
+    style LLMCall fill:#1c3d3d,color:#fff,stroke:#333,stroke-width:2px
+    style ToolNode fill:#3d3d1c,color:#fff,stroke:#333,stroke-width:2px
+    style Router fill:#4a1c3d,color:#fff,stroke:#333,stroke-width:2px
+    style InputReducer fill:#eee,stroke:#999
+    style ToolReducer fill:#eee,stroke:#999

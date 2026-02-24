@@ -19,7 +19,7 @@ tavily_client = TavilyClient()
 @mcp.tool()
 def search_web(query: str) -> Dict[str, Any]:
     """Search the web for information"""
-
+    print("calling...... dring drong")
     results = tavily_client.search(query)
 
     return results
